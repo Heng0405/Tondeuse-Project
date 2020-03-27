@@ -16,7 +16,7 @@ public class GoDroite extends Action {
     }
 
 
-    public void execute(Tondeuse tondeuse) {
+    public Tondeuse execute(Tondeuse tondeuse) {
         LOGGER.info("Tondeuse prêt à tourner à droite!");
         LOGGER.info("Position initiale : (" + tondeuse.getPosition().getX() + "," + tondeuse.getPosition().getY() + ")");
         LOGGER.info("Orientation initiale {}", tondeuse.getOrientation());
@@ -39,6 +39,7 @@ public class GoDroite extends Action {
         LOGGER.info("Action terminée!");
         LOGGER.info("Position finale ({} {})", tondeuse.getPosition().getX(), tondeuse.getPosition().getY());
         LOGGER.info("Orientation finale {}", tondeuse.getOrientation());
+        return tondeuse;
     }
 
     private Tondeuse southGoDroite(Tondeuse tondeuse) {

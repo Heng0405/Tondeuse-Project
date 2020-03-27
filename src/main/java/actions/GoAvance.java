@@ -16,7 +16,7 @@ public class GoAvance extends Action {
     }
 
     @Override
-    public void execute(Tondeuse tondeuse) throws OutOfBoundsException {
+    public Tondeuse execute(Tondeuse tondeuse) throws OutOfBoundsException {
         LOGGER.info("Tondeuse prêt à avancer!");
         LOGGER.info("Position initiale : (" + tondeuse.getPosition().getX() + "," + tondeuse.getPosition().getY() + ")");
         LOGGER.info("Orientation initiale {}", tondeuse.getOrientation());
@@ -42,6 +42,7 @@ public class GoAvance extends Action {
         LOGGER.info("Position finale ({} {})", tondeuse.getPosition().getX(), tondeuse.getPosition().getY());
         LOGGER.info("Orientation finale {}", tondeuse.getOrientation());
         //return null;
+        return tondeuse;
     }
 
     private Tondeuse southAvance(Tondeuse tondeuse) throws OutOfBoundsException {

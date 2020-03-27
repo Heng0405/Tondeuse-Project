@@ -13,6 +13,6 @@ public abstract class Action {
         this.coinSuperieur = coinSuperieur;
     }
 
-    public abstract void execute(Tondeuse tondeuse) throws OutOfBoundsException;
+    public abstract Tondeuse execute(Tondeuse tondeuse) throws OutOfBoundsException;
 
 }
