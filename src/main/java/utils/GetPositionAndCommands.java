@@ -21,34 +21,46 @@ public class GetPositionAndCommands {
 
 
     /**
-     * Get the coin supérieur de la pelouse.
+     * Get the position and orientations of tondeuses.
      *
-     * @param lineSplited exemple [5 5]
+     * @param path chemin du fichier.
      */
-    public static Position getCoodinateOrSize(String[] lineSplited) throws OutOfBoundsException, ParsingException {
+    public static List<Tondeuse> getTondeuses(String path) throws ParsingException, OutOfBoundsException {
 
-        if (lineSplited.length != 2) {
-            throw new ParsingException("This is not the right line");
+        ReadCommandFile readCommandFile = new ReadCommandFile(path);
+        String[] commandes = readCommandFile.readCommands(path);
+        List<Tondeuse> tondeuses = new ArrayList<Tondeuse>();
+        for (int i = 0; i < commandes.length; i++) {
+            if (commandes[i].length() == 5 && Character.isDigit(commandes[i].charAt(0))) {
+                try {
+
+                    int x = Integer.valueOf(commandes[i].split(" ")[0]);
+                    int y = Integer.valueOf(commandes[i].split(" ")[1]);
+                    Position position = new Position(x, y);
+                    Orientation orientation = getOrientation(commandes[i]);
+                    Tondeuse tondeuse = new Tondeuse(position, orientation);
+                    tondeuses.add(tondeuse);
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                } catch (ParsingException e) {
+                    throw new ParsingException("Parsing Error");
+                }
+            }
         }
-        int xLimit = 0; //coin supérieur de la pelouse
-        int yLimit = 0; //coin supérieur de la pelouse
-        try {
-            xLimit = Integer.parseInt(lineSplited[0]);
-            yLimit = Integer.parseInt(lineSplited[1]);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        return new Position(xLimit, yLimit);
+
+        return tondeuses;
     }
 
     /**
-     * @param lineSplited exemple [2 3 N]
+     * @param line exemple [2 3 N]
      * @return
      */
-    public static Orientation getOrientation(String[] lineSplited) throws ParsingException {
+    public static Orientation getOrientation(String line) throws ParsingException {
 
 
         Orientation orientation;
+        String[] lineSplited = line.split(" ");
         String orientationString = lineSplited[2];
 
 
@@ -68,27 +80,58 @@ public class GetPositionAndCommands {
     }
 
     /**
-     * Get the coordonnée et orientation de la tondeuse.
-     * @param line exemple 2 3 N
+     *
+     * @param path chemin du fichier
+     * @return une liste qui contient les lignes de commandes.
+     * @throws ParsingException
      */
-    public static Tondeuse getCoordinateOrientation(String line) throws ParsingException, OutOfBoundsException {
-
-        String[] lineSplited = line.split(" ");
-        if (lineSplited.length != 3) {
-            throw new ParsingException("This is not the right line");
-        }
-        Orientation orientation = getOrientation(lineSplited);
-        String[] coordinate = new String[]{lineSplited[0], lineSplited[1]};
-        Position position = getCoodinateOrSize(coordinate);
-        return new Tondeuse(position, orientation);
+    public static List<String> getListActions(String path) throws ParsingException {
+        ReadCommandFile readCommandFile = new ReadCommandFile(path);
+        String[] commandes = readCommandFile.readCommands(path);
+        List<String> listActions = new ArrayList<String>();
+        for (int i = 0; i < commandes.length; i++) {
+            if (commandes[i].matches("^[a-zA-Z]*$")) {
+                listActions.add(commandes[i]);
+            }
+        }return listActions;
     }
 
 
+    public static List<Action>[] getObjectActions(List<String> listAction, TailleDePelouse coinSuperieur) throws ParsingException {
+        ArrayList<Action>[] arrayActions = (ArrayList<Action>[])new ArrayList[listAction.size()];
+        Action avance = new GoAvance(coinSuperieur);
+        Action goDroite = new GoDroite(coinSuperieur);
+        Action goGauche = new GoGauche(coinSuperieur);
+        for(int i=0;i<listAction.size();i++){
+            arrayActions[i] = new ArrayList<Action>();
+            for(int j=0;j<listAction.get(i).length();j++){
+                char action = listAction.get(i).charAt(j);
+                switch (action) {
+                    case 'A':
+                        arrayActions[i].add(avance);
+                        break;
+                    case 'G':
+                        arrayActions[i].add(goGauche);
+                        break;
+                    case 'D':
+                        arrayActions[i].add(goDroite);
+                        break;
+                    default:
+                        throw new ParsingException("Action non connue");
+                }
+
+            }
+        }
+        return arrayActions;
+    }
+
     /**
      * Get les commandes de la linge.
+     *
      * @param line exemple AADAADADDA
      */
     public static List<Action> getActions(String line, TailleDePelouse coinSuperieur) throws ParsingException {
+
         List<Action> actions = new ArrayList<Action>();
         Action avance = new GoAvance(coinSuperieur);
         Action goDroite = new GoDroite(coinSuperieur);

@@ -104,5 +104,23 @@ public class GoDroite extends Action {
         }return new Tondeuse(position,orientation);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        GoDroite goDroite =(GoDroite) obj;
+        if(goDroite.coinSuperieur != ((GoDroite) obj).coinSuperieur){
+            return false;
+        }
+        return true;
+
+    }
 
 }

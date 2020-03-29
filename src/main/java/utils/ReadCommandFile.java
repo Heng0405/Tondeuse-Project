@@ -21,7 +21,7 @@ public class ReadCommandFile {
     private String path;
 
 
-    private ReadCommandFile(String path){
+    protected ReadCommandFile(String path){
         this.path = path;
     }
 
@@ -32,7 +32,7 @@ public class ReadCommandFile {
      * @return un tableau qui contient des commandes dans le fichier.
      * @throws ParsingException
      */
-    private String[] readCommand(String path) throws ParsingException {
+    protected static String[] readCommands(String path) throws ParsingException {
         LOGGER.info("Lecture du fichier");
         FileReader fileReader = null;
         List<String> lines = new ArrayList<String>();
@@ -67,16 +67,16 @@ public class ReadCommandFile {
     public static TailleDePelouse getCoinSuperieur(String path) throws ParsingException{
         LOGGER.info("Lecture de la première ligne du fichier");
         ReadCommandFile readCommandFile = new ReadCommandFile(path);
-        String[] commandes = readCommandFile.readCommand(path);
+        String[] commandes = readCommandFile.readCommands(path);
         if(commandes.length ==0){
             throw new ParsingException("Fichier est vide");
         }
-        TailleDePelouse pelouse = null;
 
+        TailleDePelouse pelouse = null;
         try {
             String firstLine = commandes[0];
-            int xMax = Integer.getInteger(firstLine.split("")[0]);
-            int yMax = Integer.getInteger(firstLine.split("")[1]);
+            int xMax = Integer.valueOf(firstLine.split(" ")[0]);
+            int yMax = Integer.valueOf(firstLine.split(" ")[1]);
             pelouse = new TailleDePelouse(xMax,yMax);
         }catch (NumberFormatException e){
             e.printStackTrace();

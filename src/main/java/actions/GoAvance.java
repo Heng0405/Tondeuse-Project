@@ -108,4 +108,23 @@ public class GoAvance extends Action {
         }
         return new Tondeuse(position,orientation);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        GoAvance avance =(GoAvance) obj;
+        if(avance.coinSuperieur != ((GoAvance) obj).coinSuperieur){
+            return false;
+        }
+        return true;
+
+    }
 }
