@@ -12,7 +12,9 @@ import models.Tondeuse;
 import models.Tondeuse.Orientation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Get la position de tondeuse et les commandes à partir du fichier.
@@ -96,7 +98,13 @@ public class GetPositionAndCommands {
         }return listActions;
     }
 
-
+    /**
+     *
+     * @param listAction une liste qui contient des action of String
+     * @param coinSuperieur
+     * @return array of list qui ui contient des objects of action
+     * @throws ParsingException
+     */
     public static List<Action>[] getObjectActions(List<String> listAction, TailleDePelouse coinSuperieur) throws ParsingException {
         ArrayList<Action>[] arrayActions = (ArrayList<Action>[])new ArrayList[listAction.size()];
         Action avance = new GoAvance(coinSuperieur);
@@ -126,34 +134,16 @@ public class GetPositionAndCommands {
     }
 
     /**
-     * Get les commandes de la linge.
      *
-     * @param line exemple AADAADADDA
+     * @param tondeuses
+     * @param actions
+     * @return a map with  the key: tondeuse, value: list of actions
      */
-    public static List<Action> getActions(String line, TailleDePelouse coinSuperieur) throws ParsingException {
-
-        List<Action> actions = new ArrayList<Action>();
-        Action avance = new GoAvance(coinSuperieur);
-        Action goDroite = new GoDroite(coinSuperieur);
-        Action goGauche = new GoGauche(coinSuperieur);
-        int length = line.length();
-        for (int i = 0; i < length; i++) {
-            char action = line.charAt(i);
-            switch (action) {
-                case 'A':
-                    actions.add(avance);
-                    break;
-                case 'G':
-                    actions.add(goGauche);
-                    break;
-                case 'D':
-                    actions.add(goDroite);
-                    break;
-                default:
-                    throw new ParsingException("Action non connue");
-            }
-        }
-        return actions;
+    public static Map<Tondeuse,ArrayList<Action>> getTondeuseWithActions(List<Tondeuse> tondeuses, ArrayList<Action>[] actions){
+        Map<Tondeuse,ArrayList<Action>> map = new HashMap<Tondeuse, ArrayList<Action>>();
+        for(int i=0;i<tondeuses.size();i++){
+            map.put(tondeuses.get(i),actions[i]);
+        }return map;
     }
 
 
