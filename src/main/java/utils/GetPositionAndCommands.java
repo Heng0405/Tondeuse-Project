@@ -11,16 +11,40 @@ import models.TailleDePelouse;
 import models.Tondeuse;
 import models.Tondeuse.Orientation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Get la position de tondeuse et les commandes à partir du fichier.
  */
 public class GetPositionAndCommands {
 
+
+    /**
+     * @param line exemple [2 3 N]
+     * @return
+     */
+    public static Orientation getOrientation(String line) throws ParsingException {
+
+
+        Orientation orientation;
+        String[] lineSplited = line.split(" ");
+        String orientationString = lineSplited[2];
+
+
+        if ("N".equals(orientationString)) {
+            orientation = Orientation.N;
+        } else if ("S".equals(orientationString)) {
+            orientation = Orientation.S;
+        } else if ("W".equals(orientationString)) {
+            orientation = Orientation.W;
+        } else if ("E".equals(orientationString)) {
+            orientation = Orientation.E;
+        } else {
+            throw new ParsingException("Orientation non confirmée");
+        }
+        return orientation;
+
+    }
 
     /**
      * Get the position and orientations of tondeuses.
@@ -54,32 +78,6 @@ public class GetPositionAndCommands {
         return tondeuses;
     }
 
-    /**
-     * @param line exemple [2 3 N]
-     * @return
-     */
-    public static Orientation getOrientation(String line) throws ParsingException {
-
-
-        Orientation orientation;
-        String[] lineSplited = line.split(" ");
-        String orientationString = lineSplited[2];
-
-
-        if ("N".equals(orientationString)) {
-            orientation = Orientation.N;
-        } else if ("S".equals(orientationString)) {
-            orientation = Orientation.S;
-        } else if ("W".equals(orientationString)) {
-            orientation = Orientation.W;
-        } else if ("E".equals(orientationString)) {
-            orientation = Orientation.E;
-        } else {
-            throw new ParsingException("Orientation non confirmée");
-        }
-        return orientation;
-
-    }
 
     /**
      *
@@ -140,7 +138,7 @@ public class GetPositionAndCommands {
      * @return a map with  the key: tondeuse, value: list of actions
      */
     public static Map<Tondeuse,ArrayList<Action>> getTondeuseWithActions(List<Tondeuse> tondeuses, ArrayList<Action>[] actions){
-        Map<Tondeuse,ArrayList<Action>> map = new HashMap<Tondeuse, ArrayList<Action>>();
+        Map<Tondeuse,ArrayList<Action>> map = new LinkedHashMap<Tondeuse, ArrayList<Action>>();
         for(int i=0;i<tondeuses.size();i++){
             map.put(tondeuses.get(i),actions[i]);
         }return map;

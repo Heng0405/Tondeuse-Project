@@ -1,6 +1,7 @@
 package actions;
 
 import exceptions.OutOfBoundsException;
+import exceptions.ParsingException;
 import models.Action;
 import models.Position;
 import models.TailleDePelouse;
@@ -12,33 +13,32 @@ public class GoGauche extends Action {
 
     static final Logger LOGGER = LoggerFactory.getLogger(GoAvance.class);
 
-    TailleDePelouse coinSuperieur;
-
     public GoGauche(final TailleDePelouse coinSuperieur) {
         super(coinSuperieur);
     }
 
     @Override
-    public Tondeuse execute(Tondeuse tondeuse) throws OutOfBoundsException {
+    public Tondeuse execute(Tondeuse tondeuse) throws OutOfBoundsException, ParsingException {
         LOGGER.info("Tondeuse prêt à tourner à gauche!");
         LOGGER.info("Position initiale : (" + tondeuse.getPosition().getX() + "," + tondeuse.getPosition().getY() + ")");
         LOGGER.info("Orientation initiale {}", tondeuse.getOrientation());
 
         switch (tondeuse.getOrientation()) {
             case N:
-                northGoGauche(tondeuse);
+                tondeuse.setOrientation(Tondeuse.Orientation.W);
                 break;
             case W:
-                westGoGauche(tondeuse);
+                tondeuse.setOrientation(Tondeuse.Orientation.S);
                 break;
             case E:
-                eastGoGauche(tondeuse);
+                tondeuse.setOrientation(Tondeuse.Orientation.N);
                 break;
             case S:
-                southGoGauche(tondeuse);
+                tondeuse.setOrientation(Tondeuse.Orientation.E);
                 break;
             default:
-                throw new OutOfBoundsException("Out of boundry");
+                throw new ParsingException("Orientation non connue.");
+
         }
 
         LOGGER.info("Action terminée!");
@@ -49,7 +49,7 @@ public class GoGauche extends Action {
         return tondeuse;
     }
 
-    private Tondeuse southGoGauche(Tondeuse tondeuse) {
+  /*  private Tondeuse southGoGauche(Tondeuse tondeuse) {
         Position position = tondeuse.getPosition();
         Tondeuse.Orientation orientation = tondeuse.getOrientation();
         int xInitale = position.getX();
@@ -113,6 +113,7 @@ public class GoGauche extends Action {
         }
         return new Tondeuse(position, orientation);
     }
+    */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

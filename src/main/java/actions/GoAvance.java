@@ -10,16 +10,17 @@ import models.Tondeuse;
 
 public class GoAvance extends Action {
     static final Logger LOGGER = LoggerFactory.getLogger(GoAvance.class);
-    TailleDePelouse coinSuperieur;
-    public GoAvance(final TailleDePelouse coinSuperieur){
+
+    public GoAvance(TailleDePelouse coinSuperieur){
         super(coinSuperieur);
+
     }
 
     @Override
     public Tondeuse execute(Tondeuse tondeuse) throws OutOfBoundsException {
         LOGGER.info("Tondeuse prêt à avancer!");
         LOGGER.info("Position initiale : (" + tondeuse.getPosition().getX() + "," + tondeuse.getPosition().getY() + ")");
-        LOGGER.info("Orientation initiale {}", tondeuse.getOrientation());
+        LOGGER.info("Orientation initiale : {}", tondeuse.getOrientation());
 
         switch (tondeuse.getOrientation()) {
             case N:

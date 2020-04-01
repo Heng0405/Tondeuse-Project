@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Parcourir {
-    List<Action> actions;
-    Tondeuse tondeuse;
+    //List<Action> actions;
+    //Tondeuse tondeuse;
     static final Logger LOGGER = LoggerFactory.getLogger(Parcourir.class);
-    public Parcourir(List<Action> actions, Tondeuse tondeuse){
+/*    public Parcourir(List<Action> actions, Tondeuse tondeuse){
         this.actions = actions;
         this.tondeuse = tondeuse;
-    }
+    }*/
 
     public Tondeuse passerTondeuse(List<Action> actions, Tondeuse tondeuse) throws OutOfBoundsException, ParsingException {
         for(int i=0; i<actions.size();i++){
@@ -34,12 +34,15 @@ public class Parcourir {
      * @return une liste de tondeuses après avoir passée les commandes.
      * @throws OutOfBoundsException
      */
-    public List<Tondeuse> passerCommands(Map<Tondeuse, ArrayList<Action>> map) throws OutOfBoundsException, ParsingException {
+    public static List<Tondeuse> passerCommands(Map<Tondeuse, ArrayList<Action>> map) throws OutOfBoundsException, ParsingException {
         List<Tondeuse> tondeuses = new ArrayList<Tondeuse>();
+
         for (Map.Entry<Tondeuse, ArrayList<Action>> entry : map.entrySet()) {
+            Tondeuse tondeuse = entry.getKey();
             for(int i=0;i<entry.getValue().size();i++){
-                Tondeuse tondeuse = entry.getValue().get(i).execute(entry.getKey());
-            }tondeuses.add(tondeuse);
+                tondeuse = entry.getValue().get(i).execute(entry.getKey());
+            }
+            tondeuses.add(tondeuse);
         }return tondeuses;
     }
 
