@@ -7,6 +7,10 @@ import models.Tondeuse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,15 +54,55 @@ public class Parcourir {
      *
      * @param tondeuses
      */
-    public void printResult(List<Tondeuse> tondeuses){
-        for(Tondeuse tondeuse : tondeuses){
-            System.out.println("The final position of this tondeuse : "+ tondeuse.getPosition().getX()+","+tondeuse.getPosition().getY());
-            System.out.println("The final position of this tondeuse : "+ tondeuse.getOrientation());
+    public void printResult(List<Tondeuse> tondeuses, String path){
+        BufferedWriter bw = null;
+        File file = null;
+        try {
+            file = new File(path);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
         }
+
+        try {
+            FileWriter fw = new FileWriter(file);
+            bw = new BufferedWriter(fw);
+
+            for (Tondeuse tondeuse : tondeuses) {
+                System.out.println("The final position of this tondeuse : " + tondeuse.getPosition().getX() + "," + tondeuse.getPosition().getY());
+                System.out.println("The final position of this tondeuse : " + tondeuse.getOrientation());
+
+                try {
+
+                    bw.write(tondeuse.getPosition().getX() + " " + tondeuse.getPosition().getY() + " " + tondeuse.getOrientation());
+                    //bw.write(tondeuse.toString());
+                    bw.newLine();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+                try {
+                    if (bw != null) {
+                        bw.flush();
+                        bw.close();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error in closing the BufferedWritter" + e);
+                }
+
+            }
+        } 
+
     }
 
 
 
 
 
-}
+

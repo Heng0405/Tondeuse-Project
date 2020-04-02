@@ -8,6 +8,14 @@ public class Position {
     private int y;   // y>=0
 
 
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
     public Position(int x, int y) throws OutOfBoundsException {
         if (x < 0 || y < 0) {
             throw new OutOfBoundsException("Position is out of bound");

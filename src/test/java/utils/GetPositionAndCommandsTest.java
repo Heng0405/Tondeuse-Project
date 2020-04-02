@@ -37,6 +37,7 @@ public class GetPositionAndCommandsTest {
         assertEquals(new Position(1,2), tondeuses.get(0).getPosition());
         assertEquals(Tondeuse.Orientation.E, tondeuses.get(1).getOrientation());
         assertEquals(new Position(3,3), tondeuses.get(1).getPosition());
+
     }
 
 

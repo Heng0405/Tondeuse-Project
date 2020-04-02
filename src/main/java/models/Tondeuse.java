@@ -8,6 +8,15 @@ public class Tondeuse {
         N, E, W, S
     }
 
+    @Override
+    public String toString() {
+        return "Tondeuse{" +
+                "position=" + position +
+                ", orientation=" + orientation +
+          //      ", listActions=" + listActions +
+                '}';
+    }
+
     /**
      * Position of tondeuse.
      */
@@ -21,7 +30,7 @@ public class Tondeuse {
     /**
      * Actions à executer.
      */
-    private List<Action> listActions;
+    //private List<Action> listActions;
 
 
     public void setPosition(Position position) {
